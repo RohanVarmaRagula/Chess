@@ -1,0 +1,39 @@
+1. Black and White
+COL1 = (0, 0, 0)
+COL2 = (255, 255, 255)
+
+2. Brown and Beige
+COL1 = (139, 69, 19)
+COL2 = (245, 222, 179)
+
+3. Dark and Light Gray
+COL1 = (169, 169, 169)
+COL2 = (211, 211, 211)
+
+4. Blue and Light Gray
+COL1 = (0, 51, 102)
+COL2 = (224, 224, 224)
+
+5. Green and Ivory
+COL1 = (0, 100, 0)
+COL2 = (255, 255, 240)
+
+6. Red and Gold
+COL1 = (128, 0, 0)
+COL2 = (255, 215, 0)
+
+7. Black and Neon Blue
+COL1 = (0, 0, 0)
+COL2 = (0, 255, 255)
+
+8. Dark Purple and Light Purple
+COL1 = (75, 0, 130)
+COL2 = (230, 230, 250)
+
+9. Dark Brown and Olive Green
+COL1 = (101, 67, 33)
+COL2 = (85, 107, 47)
+
+10. Orange and Cream
+COL1 = (255, 140, 0)
+COL2 = (255, 253, 208)
