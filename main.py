@@ -1,49 +1,28 @@
 import pygame
-import chess
 from Chessboard import ChessBoard
+from main_menu import main_menu
+from utils import SIZE, COL1, COL2, font
+from modes.pvp import player_vs_player   
+                
+if __name__ == "__main__":
+    pygame.init()
+    pygame.display.set_caption('Chess')
+    screen = pygame.display.set_mode((SIZE, SIZE + 50))
+    option = main_menu(screen, font)
 
-pygame.init()
-SIZE = 600
-COL1 = (139, 69, 19)
-COL2 = (245, 222, 179)
-FPS = 60
-clock = pygame.time.Clock()
+    cb = ChessBoard(SIZE, COL1, COL2)
+    cb.create_board(screen)
+    cb.fetch_and_assign_pieces(screen)
 
-screen = pygame.display.set_mode((SIZE, SIZE + 50))
-pygame.display.set_caption('Chess')
+    if option == 0: # Player vs Player
+        player_vs_player(screen, cb)
+    elif option == 1: # CPU Easy
+        pass
+    elif option == 2: # CPU Medium
+        pass
+    elif option == 3: # CPU Hard
+        pass
+    else:
+        pygame.quit()
 
-font = pygame.font.Font('./assets/fonts/static/Quicksand-Medium.ttf', 30)
-
-cb = ChessBoard(SIZE, COL1, COL2)
-cb.create_board(screen)
-cb.fetch_and_assign_pieces(screen)
-
-running = True
-while running:
-    clock.tick(FPS)
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            cb.handle_click(event.pos)
-            cb.create_board(screen)  
-            cb.fetch_and_assign_pieces(screen)  
-            if cb.last_selected_square is not None:
-                cb.highlight_square(screen, cb.last_selected_square)
-                cb.highlight_legal_moves(screen, cb.last_selected_square)  
-        cb.selected_square = None
-        
-    if cb.check_outcome():
-        running = False
-        
-    score_area_rect = pygame.Rect(0, SIZE, SIZE, 50)
-    screen.fill((0, 0, 0), score_area_rect)
-    text_surface1 = font.render(f'White score = {cb.score(chess.WHITE)}', True, (0, 200, 255)) 
-    text_surface2 = font.render(f'Black score = {cb.score(chess.BLACK)}', True, (0, 200, 255)) 
-    screen.blit(text_surface1, (10, SIZE + 10))
-    screen.blit(text_surface2, (SIZE - 230, SIZE + 10))
-    
-    pygame.display.set_caption(f'Chess ({cb.turn()} to move)')
-    pygame.display.update()
-
-pygame.quit()
+    pygame.quit()
