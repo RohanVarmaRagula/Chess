@@ -1,0 +1,10 @@
+checkmate : 
+    board = chess.Board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 1")
+    board.push_san("Qxf7#")
+
+stalemate :
+    board = chess.Board("7k/5Q2/6K1/8/8/8/8/8 b - - 0 1")  
+    board.push_san("Kh8")
+
+insufficient material :
+    board = chess.Board("8/8/8/8/8/8/8/kN6 b - - 0 1")

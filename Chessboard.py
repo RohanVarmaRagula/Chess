@@ -25,7 +25,21 @@ class ChessBoard:
         }
         self.selected_square = None
         self.last_selected_square = None
-
+        self.pieces_scores = {
+            'p' : 1,
+            'P' : 1,
+            'b' : 3,
+            'B' : 3,
+            'r' : 5,
+            'R' : 5,
+            'q' : 9,
+            'Q' : 9,
+            'n' : 3,
+            'N' : 3,
+            'k' : 0,
+            'K' : 0
+        }
+        
     def create_board(self, screen):
         xloc = 0
         yloc = 0
@@ -72,6 +86,46 @@ class ChessBoard:
     def highlight_legal_moves(self, screen, square):
         for move in self.board.legal_moves:
             if move.from_square == square:
+                src = self.board.piece_at(move.from_square)
+                dest = self.board.piece_at(move.to_square)
                 rect = self.arr[move.to_square]
-                pygame.draw.rect(screen, (0, 255, 0), rect, 3)
+                if dest is None:
+                    pygame.draw.rect(screen, (0, 255, 0), rect, 3)
+                elif dest.color != src.color:
+                    pygame.draw.rect(screen, (255, 0, 0), rect, 3)
 
+    def check_outcome(self):
+        outcome = self.board.outcome()
+        if outcome is not None:
+            if outcome.termination == chess.Termination.CHECKMATE:
+                if outcome.winner:
+                    print("White wins by checkmate\n")
+                else:
+                    print("Black wins by checkmate\n")
+
+            elif outcome.termination == chess.Termination.STALEMATE:
+                print("Game ends in a draw by stalemate\n")
+
+            elif outcome.termination == chess.Termination.INSUFFICIENT_MATERIAL:
+                print("Game ends in a draw due to insufficient material\n")
+
+            elif outcome.termination == chess.Termination.THREEFOLD_REPETITION:
+                print("Game ends in a draw by threefold repetition\n")
+
+            elif outcome.termination == chess.Termination.FIFTY_MOVES:
+                print("Game ends in a draw by the fifty-move rule\n")
+
+        return True if outcome is not None else False
+
+    def turn(self):
+        return 'WHITE' if self.board.turn else 'BLACK'
+    
+    def score(self, col):
+        initial_score = 39
+        for square in range(64):
+            piece = self.board.piece_at(square)
+            if piece is None or piece.color == col:
+                continue
+            initial_score -= self.pieces_scores[piece.symbol()]
+        
+        return initial_score
