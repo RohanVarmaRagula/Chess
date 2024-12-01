@@ -4,7 +4,7 @@ from utils import scale_and_load
 
 class ChessBoard:
     def __init__(self, SIZE, COL1, COL2):
-        self.board = chess.Board()
+        self.board = chess.Board('rnbkqbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBKQBNR')
         self.SIZE = SIZE
         self.COL1 = COL1
         self.COL2 = COL2
@@ -45,7 +45,7 @@ class ChessBoard:
         yloc = 0
         for i in  range(8):
             for j in range(8):
-                col = self.COL1 if (i + j) % 2 == 0 else self.COL2
+                col = self.COL1 if (i + j) % 2 == 1 else self.COL2
                 rect = pygame.Rect(xloc, yloc, self.SIZE // 8, self.SIZE // 8)
                 pygame.draw.rect(screen, col, rect)
                 self.arr.append(rect)
@@ -115,11 +115,13 @@ class ChessBoard:
             elif outcome.termination == chess.Termination.FIFTY_MOVES:
                 print("Game ends in a draw by the fifty-move rule\n")
 
+            pygame.time.delay(2000)
+            
         return True if outcome is not None else False
 
     def turn(self):
-        return 'WHITE' if self.board.turn else 'BLACK'
-    
+        return chess.WHITE if self.board.turn else chess.BLACK
+
     def score(self, col):
         initial_score = 39
         for square in range(64):

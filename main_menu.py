@@ -42,6 +42,7 @@ def main_menu(screen, font):
                 
                 for i, rect in enumerate(option_rects):
                     if rect.collidepoint(pos):
+                        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
                         selected_option = i
                         running = False
                         

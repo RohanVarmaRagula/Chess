@@ -1,8 +1,10 @@
-import pygame
 import chess
-from utils import FPS, WHITE, BLACK, SIZE, clock, font
+import pygame
+from Chessboard import ChessBoard
+from utils import FPS, clock
+from handle_things import handle_display, handle_mousebuttondown_movement
 
-def player_vs_player(screen, cb):
+def player_vs_player(screen, cb:ChessBoard):
     running = True
     while running:
         clock.tick(FPS)
@@ -10,23 +12,12 @@ def player_vs_player(screen, cb):
             if event.type == pygame.QUIT:
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                cb.handle_click(event.pos)
-                cb.create_board(screen)  
-                cb.fetch_and_assign_pieces(screen)  
-                if cb.last_selected_square is not None:
-                    cb.highlight_square(screen, cb.last_selected_square)
-                    cb.highlight_legal_moves(screen, cb.last_selected_square)  
-            cb.selected_square = None
+                handle_mousebuttondown_movement(screen, cb, event)
             
         if cb.check_outcome():
             running = False
             
-        score_area_rect = pygame.Rect(0, SIZE, SIZE, 50)
-        screen.fill(BLACK, score_area_rect)
-        text_surface1 = font.render(f'White score = {cb.score(chess.WHITE)}', True, (0, 200, 255)) 
-        text_surface2 = font.render(f'Black score = {cb.score(chess.BLACK)}', True, (0, 200, 255)) 
-        screen.blit(text_surface1, (10, SIZE + 10))
-        screen.blit(text_surface2, (SIZE - 230, SIZE + 10))
-        
-        pygame.display.set_caption(f'Chess ({cb.turn()} to move)')
+        handle_display(screen, cb)
         pygame.display.update()
+        
+        

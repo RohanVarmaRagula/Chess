@@ -1,7 +1,6 @@
 import pygame
 
 pygame.init()
-
 SIZE = 600
 COL1 = (139, 69, 19)
 COL2 = (245, 222, 179)

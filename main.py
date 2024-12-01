@@ -2,8 +2,9 @@ import pygame
 from Chessboard import ChessBoard
 from main_menu import main_menu
 from utils import SIZE, COL1, COL2, font
-from modes.pvp import player_vs_player   
-                
+from modes.pvp import player_vs_player
+from modes.mini_max import mini_max          
+    
 if __name__ == "__main__":
     pygame.init()
     pygame.display.set_caption('Chess')
@@ -17,7 +18,7 @@ if __name__ == "__main__":
     if option == 0: # Player vs Player
         player_vs_player(screen, cb)
     elif option == 1: # CPU Easy
-        pass
+        mini_max(screen, cb, 3)
     elif option == 2: # CPU Medium
         pass
     elif option == 3: # CPU Hard
