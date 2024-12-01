@@ -3,7 +3,8 @@ from Chessboard import ChessBoard
 from main_menu import main_menu
 from utils import SIZE, COL1, COL2, font
 from modes.pvp import player_vs_player
-from modes.mini_max import mini_max          
+from modes.mini_max import mini_max   
+from modes.alpha_beta import alpha_beta       
     
 if __name__ == "__main__":
     pygame.init()
@@ -20,7 +21,7 @@ if __name__ == "__main__":
     elif option == 1: # CPU Easy
         mini_max(screen, cb, 3)
     elif option == 2: # CPU Medium
-        pass
+        alpha_beta(screen, cb, 4)
     elif option == 3: # CPU Hard
         pass
     else:

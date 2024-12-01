@@ -1,5 +1,6 @@
 import chess
 import pygame
+import math
 from Chessboard import ChessBoard
 from utils import clock, FPS
 from handle_things import handle_display, handle_mousebuttondown_movement
@@ -7,25 +8,40 @@ from handle_things import handle_display, handle_mousebuttondown_movement
 def eval(cb:ChessBoard):
     return cb.score(chess.BLACK) - cb.score(chess.WHITE)
 
-def choose_best_move_by_minimax(cb:ChessBoard, max_depth = 3, maximizer = True):
+def choose_best_move_by_alphabeta(cb : ChessBoard, max_depth, alpha = -math.inf, beta = math.inf, maximizer = True):
     if max_depth == 0:
         return None, eval(cb)
     
     best_move = None
-    best_score = float('-inf') if maximizer else float('inf')
+    best_score = -math.inf if maximizer else math.inf
     
-    for move in cb.board.legal_moves:
-        cb.board.push(move)
-        _, next_score = choose_best_move_by_minimax(cb, max_depth - 1, not maximizer)
-        cb.board.pop()
+    if maximizer:
+        for move in cb.board.legal_moves:
+            cb.board.push(move)
+            _, next_score = choose_best_move_by_alphabeta(cb, max_depth - 1, alpha, beta, not maximizer)
+            cb.board.pop()
+            if next_score > best_score:
+                best_score = next_score
+                best_move = move
+            alpha = max(alpha, next_score)
+            if alpha >= beta:
+                break        
+    else:
+        for move in cb.board.legal_moves:
+            cb.board.push(move)
+            _, next_score = choose_best_move_by_alphabeta(cb, max_depth - 1, alpha, beta, not maximizer)
+            cb.board.pop()
+            if next_score < best_score:
+                best_score = next_score
+                best_move = move
+            beta = min(beta, next_score)
+            if alpha >= beta:
+                break
         
-        if (maximizer and next_score > best_score) or (not maximizer and next_score < best_score):
-            best_score = next_score
-            best_move = move
-            
     return best_move, best_score
+    
         
-def mini_max(screen, cb:ChessBoard, difficulty): # Always black is the agent
+def alpha_beta(screen, cb:ChessBoard, difficulty): # Always black is the agent
     running = True
     while running:
         clock.tick(FPS)
@@ -43,7 +59,7 @@ def mini_max(screen, cb:ChessBoard, difficulty): # Always black is the agent
             break
         
         if cb.turn() == chess.BLACK:
-            best_move, _ = choose_best_move_by_minimax(cb, difficulty)
+            best_move, _ = choose_best_move_by_alphabeta(cb, difficulty)
             if best_move is not None:
                 cb.board.push(best_move)
             cb.create_board(screen)  
