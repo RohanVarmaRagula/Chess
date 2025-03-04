@@ -1,4 +1,5 @@
 import chess
+import random
 import pygame
 from Chessboard import ChessBoard
 from utils import clock, FPS
@@ -19,9 +20,12 @@ def choose_best_move_by_minimax(cb:ChessBoard, max_depth = 3, maximizer = True):
         _, next_score = choose_best_move_by_minimax(cb, max_depth - 1, not maximizer)
         cb.board.pop()
         
-        if (maximizer and next_score > best_score) or (not maximizer and next_score < best_score):
+        if (maximizer and next_score >= best_score) or (not maximizer and next_score <= best_score):
+            if next_score == best_score:
+                best_move = random.choice([move, best_move])
+            else:
+                best_move = move
             best_score = next_score
-            best_move = move
             
     return best_move, best_score
         
