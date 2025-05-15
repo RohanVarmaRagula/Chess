@@ -1,2 +1,2 @@
-pip install chess
-pip install pygame
+chess 
+pygame
